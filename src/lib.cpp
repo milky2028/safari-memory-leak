@@ -1,28 +1,11 @@
+#include <emscripten/bind.h>
 #include <stdio.h>
-#include <cstddef>
-#include <sstream>
-#include <string>
+#include <thread>
 
-size_t files_written = 0;
-
-void write_file() {
-  std::stringstream ss;
-  ss << "written_from_wasm_" << files_written << ".txt\n";
-  auto filename = ss.str();
-
-  FILE* handle = fopen(filename.c_str(), "w");
-  if (handle == NULL) {
-    printf("Error opening file handle.\n");
-    return;
-  }
-
-  fprintf(handle, "Some text written to file.");
-  fclose(handle);
-
-  printf("File written successfully.\n");
-  files_written++;
+void print_from_thread() {
+  std::thread([] { printf("Printed from a thread.\n"); }).join();
 }
 
-int main() {
-  write_file();
+EMSCRIPTEN_BINDINGS(module) {
+  emscripten::function("print_from_thread", &print_from_thread);
 }
