@@ -23,3 +23,5 @@ Comparing heap snapshots in the Timeline view shows that multiple `SharedArrayBu
 With PS web, it's more common for the page to crash with the message, "This webpage reloaded because a problem occurred" or, "This webpage reloaded because it was using significant memory." In this example, we just see that after about 7 refreshes, the page just starts throwing out of memory errors.
 
 Compiled output from Emscripten is committed in this repo to simplify reproducing, but the outcome should be reproducible when compiling with Emscripten on your own. `compile.sh` shows the compiler flags used. Emscripten `3.1.54` was used to compile the output committed here.
+
+Out of memory issue does not reproduce in Firefox or Chrome.
