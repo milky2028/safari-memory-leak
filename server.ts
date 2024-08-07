@@ -37,7 +37,7 @@ async function handler(req: Request): Promise<Response> {
   if (path.includes(".js")) {
     return new Response(await Deno.readFile("./dist/lib.js"), {
       ...ok,
-      headers: { ...js },
+      headers: { ...js, ...isolated },
     });
   }
 
