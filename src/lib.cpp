@@ -6,7 +6,7 @@
 
 EMSCRIPTEN_DECLARE_VAL_TYPE(EmscriptenPromiseWrapper);
 
-auto QUEUE_KEY = "__EMSCRIPTEN_PROMISE_QUEUE__";
+auto EMSCRIPTEN_PROMISE_QUEUE_KEY = "__EMSCRIPTEN_PROMISE_QUEUE__";
 int32_t id = 0;
 
 auto promisify(std::function<void()> fn) {
@@ -27,7 +27,7 @@ auto promisify(std::function<void()> fn) {
       });
 
       globalThis[promiseQueueKey].set($1, promiseData);
-    }, QUEUE_KEY, promise_id);
+    }, EMSCRIPTEN_PROMISE_QUEUE_KEY, promise_id);
     // clang-format on
 
     std::thread([fn, promise_id] {
@@ -40,11 +40,11 @@ auto promisify(std::function<void()> fn) {
         const promise = map.get($1);
 
         promise?.resolve();
-      }, QUEUE_KEY, promise_id);
+      }, EMSCRIPTEN_PROMISE_QUEUE_KEY, promise_id);
       // clang-format on
     }).detach();
 
-    auto promise_map = emscripten::val::global(QUEUE_KEY);
+    auto promise_map = emscripten::val::global(EMSCRIPTEN_PROMISE_QUEUE_KEY);
     return promise_map.call<EmscriptenPromiseWrapper>("get", promise_id);
   };
 
@@ -60,5 +60,6 @@ auto print_from_thread() {
 
 EMSCRIPTEN_BINDINGS(module) {
   emscripten::function("print_from_thread", &print_from_thread);
-  emscripten::register_type<EmscriptenPromiseWrapper>("{ id: number; promise: Promise<void>; resolve: VoidFunction; reject: VoidFunction; } | undefined");
+  emscripten::register_type<EmscriptenPromiseWrapper>(
+      "{ id: number; promise: Promise<void>; resolve: VoidFunction; reject: VoidFunction; } | undefined");
 }
