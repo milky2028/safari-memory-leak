@@ -1,4 +1,5 @@
 emcc \
+-sEXPORT_ES6 \
 -sENVIRONMENT=web,worker \
 -sALLOW_MEMORY_GROWTH=1 \
 -sMAXIMUM_MEMORY=4GB \
@@ -7,6 +8,6 @@ emcc \
 -lembind \
 -Oz \
 -std=c++17 \
---embind-emit-tsd lib.d.ts \
+--emit-tsd lib.d.ts \
 ./src/lib.cpp \
 -o ./dist/lib.js
