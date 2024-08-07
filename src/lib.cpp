@@ -10,7 +10,7 @@ auto EMSCRIPTEN_PROMISE_QUEUE_KEY = "__EMSCRIPTEN_PROMISE_QUEUE__";
 int32_t id = 0;
 
 auto promisify(std::function<void()> fn) {
-  std::function<EmscriptenPromiseWrapper()> f = [fn] {
+  std::function<EmscriptenPromiseWrapper()> awaitable_function = [fn] {
     int32_t promise_id = ++id;
 
     // clang-format off
@@ -48,7 +48,7 @@ auto promisify(std::function<void()> fn) {
     return promise_map.call<EmscriptenPromiseWrapper>("get", promise_id);
   };
 
-  return f;
+  return awaitable_function;
 }
 
 auto print_from_thread() {
