@@ -8,16 +8,16 @@
   <body>
     <button>Print from Thread</button>
     <script type="module">
-      import initialize from "./dist/lib.js"
+      import initialize from "./dist/lib.js";
       const btn = document.querySelector("button");
 
       btn.addEventListener("click", async () => {
         const module = await initialize();
 
         const promise = module.print_from_thread();
-        console.log('before print')
-        await promise.promise;
-        console.log('after print')
+        console.log("before print");
+        console.log(await promise.promise);
+        console.log("after print");
       });
     </script>
   </body>
