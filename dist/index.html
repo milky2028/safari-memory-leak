@@ -14,22 +14,15 @@
       You don't have to actually click the button below, that just verifies that
       threading is working correctly.
     </p>
-    <button>Print from Thread</button>
     <p id="runtime"></p>
     <p id="success"></p>
     <p id="failure"></p>
     <script>
-      globalThis.Module = {};
-      globalThis.Module.onRuntimeInitialized = async () => {
-        const runtime = document.querySelector("#runtime");
-        runtime.textContent = "Runtime initialized.";
-      };
-
       const ONE_GIBIBYTE = 1024 * 1024 * 1024;
       const WASM_PAGE_SIZE = 65536;
 
       try {
-        globalThis.Module.wasmMemory = new WebAssembly.Memory({
+        window.wasmMemory = new WebAssembly.Memory({
           initial: (2 * ONE_GIBIBYTE) / WASM_PAGE_SIZE,
           maximum: (4 * ONE_GIBIBYTE) / WASM_PAGE_SIZE,
           shared: true,
@@ -39,17 +32,6 @@
         failure.textContent = `Failure. Error: ${e.message}`;
         console.error(e);
       }
-    </script>
-    <script src="/lib.js"></script>
-    <script>
-      const btn = document.querySelector("button");
-      const success = document.querySelector("#success");
-
-      let times_printed = 0;
-      btn.addEventListener("click", async () => {
-        globalThis.Module.print_from_thread();
-        success.textContent = `${times_printed++} printed from thread`;
-      });
     </script>
   </body>
 </html>
